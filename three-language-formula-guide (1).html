@@ -1,0 +1,655 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Three Language Formula and its Barriers</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #000000;
+            color: #e0e0e0;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            text-align: center;
+            padding: 40px 20px;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            border-radius: 15px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(255, 255, 255, 0.05);
+        }
+
+        h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .subtitle {
+            color: #a0a0a0;
+            font-size: 1.1em;
+        }
+
+        .section {
+            background: #1a1a1a;
+            border-left: 4px solid #667eea;
+            padding: 30px;
+            margin-bottom: 25px;
+            border-radius: 10px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .section:hover {
+            background: #222222;
+            transform: translateX(5px);
+            box-shadow: 0 5px 20px rgba(102, 126, 234, 0.2);
+        }
+
+        .section h2 {
+            color: #667eea;
+            margin-bottom: 15px;
+            font-size: 1.8em;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .section-number {
+            background: #667eea;
+            color: #000;
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 0.8em;
+        }
+
+        .section p {
+            color: #c0c0c0;
+            margin-bottom: 15px;
+            font-size: 1.05em;
+        }
+
+        .section ul {
+            list-style: none;
+            padding-left: 20px;
+        }
+
+        .section li {
+            color: #b0b0b0;
+            margin-bottom: 10px;
+            position: relative;
+            padding-left: 25px;
+        }
+
+        .section li:before {
+            content: "▹";
+            position: absolute;
+            left: 0;
+            color: #667eea;
+            font-size: 1.2em;
+        }
+
+        .quiz-section {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            padding: 40px;
+            border-radius: 15px;
+            margin-top: 50px;
+        }
+
+        .quiz-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .quiz-header h2 {
+            color: #667eea;
+            font-size: 2.2em;
+            margin-bottom: 10px;
+        }
+
+        .question-card {
+            background: #000000;
+            padding: 25px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            border: 2px solid #333;
+        }
+
+        .question-text {
+            font-size: 1.2em;
+            color: #ffffff;
+            margin-bottom: 20px;
+            font-weight: 500;
+        }
+
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .option {
+            background: #1a1a1a;
+            padding: 15px 20px;
+            border-radius: 8px;
+            border: 2px solid #333;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            color: #e0e0e0;
+        }
+
+        .option:hover {
+            background: #252525;
+            border-color: #667eea;
+            transform: translateX(5px);
+        }
+
+        .option.selected {
+            background: #667eea;
+            border-color: #667eea;
+            color: #000;
+            font-weight: 500;
+        }
+
+        .option.correct {
+            background: #10b981;
+            border-color: #10b981;
+            color: #000;
+        }
+
+        .option.incorrect {
+            background: #ef4444;
+            border-color: #ef4444;
+            color: #fff;
+        }
+
+        .hint-btn {
+            background: #f59e0b;
+            color: #000;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            margin-top: 15px;
+            transition: all 0.3s ease;
+        }
+
+        .hint-btn:hover {
+            background: #fbbf24;
+            transform: scale(1.05);
+        }
+
+        .hint-box {
+            background: #2d2d2d;
+            border-left: 4px solid #f59e0b;
+            padding: 15px;
+            margin-top: 15px;
+            border-radius: 6px;
+            color: #fbbf24;
+            display: none;
+        }
+
+        .hint-box.show {
+            display: block;
+            animation: slideDown 0.3s ease;
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .submit-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #fff;
+            border: none;
+            padding: 15px 40px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1.1em;
+            font-weight: 600;
+            margin-top: 20px;
+            transition: all 0.3s ease;
+            display: block;
+            width: 100%;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
+        }
+
+        .submit-btn:disabled {
+            background: #555;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .result-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .result-modal.show {
+            display: flex;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .result-content {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            padding: 50px;
+            border-radius: 20px;
+            text-align: center;
+            max-width: 500px;
+            border: 3px solid #667eea;
+            animation: scaleIn 0.3s ease;
+        }
+
+        @keyframes scaleIn {
+            from {
+                transform: scale(0.8);
+                opacity: 0;
+            }
+            to {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        .result-score {
+            font-size: 4em;
+            font-weight: bold;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin: 20px 0;
+        }
+
+        .result-message {
+            font-size: 1.5em;
+            color: #ffffff;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+
+        .result-description {
+            color: #a0a0a0;
+            margin-bottom: 30px;
+            font-size: 1.1em;
+        }
+
+        .retry-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #fff;
+            border: none;
+            padding: 15px 40px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1.1em;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .retry-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
+        }
+
+        .progress-bar {
+            background: #1a1a1a;
+            height: 8px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+            height: 100%;
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2em;
+            }
+
+            .section h2 {
+                font-size: 1.5em;
+            }
+
+            .result-content {
+                padding: 30px;
+                margin: 20px;
+            }
+
+            .result-score {
+                font-size: 3em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Three Language Formula and its Barriers</h1>
+            <p class="subtitle">A Comprehensive Guide to India's Multilingual Education Policy</p>
+        </header>
+
+        <div class="section">
+            <h2><span class="section-number">01</span> The Three-Language Formula: A Linguistic Bridge</h2>
+            <p>The Three-Language Formula (TLF) is a policy framework introduced in Indian education to promote multilingualism and national integration. Formulated in 1968 as part of the National Policy on Education, it aimed to balance regional linguistic identity with national unity.</p>
+            <ul>
+                <li><strong>Hindi-speaking states:</strong> Regional language (typically Hindi), English, and another modern Indian language (preferably from South India)</li>
+                <li><strong>Non-Hindi speaking states:</strong> Regional language, Hindi, and English</li>
+                <li><strong>Core Purpose:</strong> Create a linguistic bridge that connects diverse communities while preserving regional cultural heritage</li>
+                <li><strong>Educational Vision:</strong> Students become proficient in at least three languages by completing secondary education</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2><span class="section-number">02</span> Unity in Diversity: Objectives of Multilingualism</h2>
+            <p>The TLF was designed with multiple strategic objectives that extend beyond mere language learning:</p>
+            <ul>
+                <li><strong>National Integration:</strong> Foster understanding and communication across different linguistic regions of India</li>
+                <li><strong>Cultural Preservation:</strong> Maintain and promote regional languages and cultural identities</li>
+                <li><strong>Cognitive Development:</strong> Enhance cognitive flexibility and critical thinking through multilingual education</li>
+                <li><strong>Economic Mobility:</strong> Provide students with language skills essential for career opportunities across India</li>
+                <li><strong>Social Cohesion:</strong> Reduce linguistic barriers and promote inter-state harmony</li>
+                <li><strong>Global Competitiveness:</strong> Equip students with English proficiency for international opportunities</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2><span class="section-number">03</span> Structural Hurdles: The Implementation Gap</h2>
+            <p>Despite noble objectives, the TLF has faced significant implementation challenges across Indian states:</p>
+            <ul>
+                <li><strong>Resource Constraints:</strong> Shortage of qualified teachers for multiple languages, especially in rural areas</li>
+                <li><strong>Infrastructure Deficits:</strong> Lack of appropriate teaching materials and language labs in many schools</li>
+                <li><strong>Inconsistent Application:</strong> Different states interpret and implement the formula differently</li>
+                <li><strong>Hindi State Resistance:</strong> Many Hindi-speaking states teach Hindi and English, with only token inclusion of a third language</li>
+                <li><strong>Quality Variations:</strong> Significant disparity between urban elite schools and rural government schools</li>
+                <li><strong>Assessment Challenges:</strong> Difficulty in standardizing evaluation across diverse linguistic contexts</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2><span class="section-number">04</span> The Politics of Identity: Socio-Political Barriers</h2>
+            <p>The TLF operates within a complex web of linguistic politics and identity concerns:</p>
+            <ul>
+                <li><strong>Hindi Imposition Fears:</strong> Southern states view mandatory Hindi as linguistic imperialism threatening regional identities</li>
+                <li><strong>Anti-Hindi Movements:</strong> Historical protests in Tamil Nadu and other states against Hindi dominance</li>
+                <li><strong>English Privilege:</strong> Growing preference for English over Indian languages among middle-class families</li>
+                <li><strong>Regional Chauvinism:</strong> Some states prioritize regional languages at the expense of national integration goals</li>
+                <li><strong>Political Exploitation:</strong> Language issues become electoral tools for regional parties</li>
+                <li><strong>Constitutional Tensions:</strong> Conflicts between federal language policy and state autonomy in education</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2><span class="section-number">05</span> The Path Forward: 2026 Policy & Digital Solutions</h2>
+            <p>The National Education Policy (NEP) 2020 reimagines the TLF with contemporary solutions and flexibility:</p>
+            <ul>
+                <li><strong>Flexible Framework:</strong> Greater choice in selecting three languages, including classical and foreign languages</li>
+                <li><strong>Mother Tongue Emphasis:</strong> Encouragement of education in mother tongue/regional language until at least Grade 5</li>
+                <li><strong>Digital Integration:</strong> AI-powered language learning apps, online teacher training, and digital content repositories</li>
+                <li><strong>Technology Solutions:</strong> Translation tools, speech recognition, and adaptive learning platforms to overcome resource gaps</li>
+                <li><strong>Community Involvement:</strong> Engaging local communities in preserving and teaching regional languages</li>
+                <li><strong>Assessment Innovation:</strong> Competency-based evaluation replacing rote memorization</li>
+                <li><strong>2026 Vision:</strong> By 2026, aim for universalization of multilingual education with quality digital resources across all schools</li>
+            </ul>
+        </div>
+
+        <div class="quiz-section" id="quizSection">
+            <div class="quiz-header">
+                <h2>Test Your Knowledge</h2>
+                <p style="color: #a0a0a0;">Challenge yourself with this comprehensive quiz!</p>
+            </div>
+
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressBar"></div>
+            </div>
+
+            <div id="questionsContainer"></div>
+
+            <button class="submit-btn" id="submitBtn">Submit Quiz</button>
+        </div>
+    </div>
+
+    <div class="result-modal" id="resultModal">
+        <div class="result-content">
+            <div class="result-score" id="resultScore"></div>
+            <div class="result-message" id="resultMessage"></div>
+            <div class="result-description" id="resultDescription"></div>
+            <button class="retry-btn" onclick="location.reload()">Try Again</button>
+        </div>
+    </div>
+
+    <script>
+        const questions = [
+            {
+                question: "In which year was the Three-Language Formula first introduced as part of India's National Policy on Education?",
+                options: ["1956", "1968", "1976", "1986"],
+                correct: 1,
+                hint: "Think about the period after India's first two decades of independence, during a major educational reform era."
+            },
+            {
+                question: "What is the primary language configuration recommended for non-Hindi speaking states under the TLF?",
+                options: [
+                    "Regional language, Sanskrit, and English",
+                    "Hindi, English, and a foreign language",
+                    "Regional language, Hindi, and English",
+                    "Regional language, Hindi, and Sanskrit"
+                ],
+                correct: 2,
+                hint: "Consider which combination ensures both national integration and global competitiveness while respecting regional identity."
+            },
+            {
+                question: "Which of the following is NOT listed as an objective of the Three-Language Formula?",
+                options: [
+                    "National Integration",
+                    "Elimination of regional languages",
+                    "Cultural Preservation",
+                    "Cognitive Development"
+                ],
+                correct: 1,
+                hint: "The TLF aims to preserve diversity, not eliminate it. Look for the option that contradicts this principle."
+            },
+            {
+                question: "What is the most significant structural hurdle mentioned in implementing the TLF?",
+                options: [
+                    "Student resistance to learning",
+                    "Shortage of qualified teachers and resources",
+                    "Excessive funding",
+                    "Too many language options"
+                ],
+                correct: 1,
+                hint: "Think about what schools in rural and underdeveloped areas typically lack the most."
+            },
+            {
+                question: "Which region has historically shown the strongest resistance to mandatory Hindi teaching, viewing it as linguistic imperialism?",
+                options: [
+                    "Northern states",
+                    "Eastern states",
+                    "Southern states (especially Tamil Nadu)",
+                    "Western states"
+                ],
+                correct: 2,
+                hint: "Consider which region has its own ancient classical languages and strong linguistic identity distinct from Hindi."
+            },
+            {
+                question: "According to NEP 2020's vision for 2026, what is emphasized for early education?",
+                options: [
+                    "Mandatory English from Grade 1",
+                    "Mother tongue/regional language until at least Grade 5",
+                    "Only Hindi in all states",
+                    "Foreign languages from kindergarten"
+                ],
+                correct: 1,
+                hint: "Modern research shows children learn better in their native language during formative years. NEP 2020 aligns with this."
+            }
+        ];
+
+        let userAnswers = new Array(questions.length).fill(null);
+        let hintsRevealed = new Array(questions.length).fill(false);
+
+        function renderQuestions() {
+            const container = document.getElementById('questionsContainer');
+            container.innerHTML = '';
+
+            questions.forEach((q, index) => {
+                const questionCard = document.createElement('div');
+                questionCard.className = 'question-card';
+                questionCard.innerHTML = `
+                    <div class="question-text">${index + 1}. ${q.question}</div>
+                    <div class="options" id="options-${index}">
+                        ${q.options.map((option, optIndex) => `
+                            <div class="option" onclick="selectOption(${index}, ${optIndex})" id="option-${index}-${optIndex}">
+                                ${String.fromCharCode(65 + optIndex)}. ${option}
+                            </div>
+                        `).join('')}
+                    </div>
+                    <button class="hint-btn" onclick="toggleHint(${index})">💡 Show Hint</button>
+                    <div class="hint-box" id="hint-${index}">
+                        <strong>Hint:</strong> ${q.hint}
+                    </div>
+                `;
+                container.appendChild(questionCard);
+            });
+        }
+
+        function selectOption(questionIndex, optionIndex) {
+            // Clear previous selection
+            for (let i = 0; i < 4; i++) {
+                const opt = document.getElementById(`option-${questionIndex}-${i}`);
+                opt.classList.remove('selected');
+            }
+
+            // Mark new selection
+            const selected = document.getElementById(`option-${questionIndex}-${optionIndex}`);
+            selected.classList.add('selected');
+            userAnswers[questionIndex] = optionIndex;
+
+            updateProgress();
+        }
+
+        function toggleHint(index) {
+            const hintBox = document.getElementById(`hint-${index}`);
+            hintBox.classList.toggle('show');
+            hintsRevealed[index] = !hintsRevealed[index];
+        }
+
+        function updateProgress() {
+            const answered = userAnswers.filter(a => a !== null).length;
+            const percentage = (answered / questions.length) * 100;
+            document.getElementById('progressBar').style.width = percentage + '%';
+        }
+
+        function submitQuiz() {
+            const unanswered = userAnswers.filter(a => a === null).length;
+            if (unanswered > 0) {
+                alert(`Please answer all questions! ${unanswered} question(s) remaining.`);
+                return;
+            }
+
+            let score = 0;
+            questions.forEach((q, index) => {
+                if (userAnswers[index] === q.correct) {
+                    score++;
+                    document.getElementById(`option-${index}-${userAnswers[index]}`).classList.add('correct');
+                } else {
+                    document.getElementById(`option-${index}-${userAnswers[index]}`).classList.add('incorrect');
+                    document.getElementById(`option-${index}-${q.correct}`).classList.add('correct');
+                }
+            });
+
+            document.getElementById('submitBtn').disabled = true;
+            showResult(score);
+        }
+
+        function showResult(score) {
+            const modal = document.getElementById('resultModal');
+            const scoreDisplay = document.getElementById('resultScore');
+            const message = document.getElementById('resultMessage');
+            const description = document.getElementById('resultDescription');
+
+            scoreDisplay.textContent = `${score}/6`;
+
+            let achievementMessage, achievementDesc;
+
+            if (score === 6) {
+                achievementMessage = "Perfect Score! 🏆";
+                achievementDesc = "Outstanding! You're a Three-Language Formula expert!";
+            } else if (score === 5) {
+                achievementMessage = "Excellent! 🌟";
+                achievementDesc = "Impressive knowledge! Just one minor slip.";
+            } else if (score === 4) {
+                achievementMessage = "Great Job! 👏";
+                achievementDesc = "Solid understanding! A few more details to master.";
+            } else if (score === 3) {
+                achievementMessage = "Good Effort! 📚";
+                achievementDesc = "You're getting there! Review the material and try again.";
+            } else if (score === 2) {
+                achievementMessage = "Keep Learning! 📖";
+                achievementDesc = "There's room for improvement. Go through the guide again.";
+            } else {
+                achievementMessage = "Read It Again! 🔄";
+                achievementDesc = "Time to revisit the material. Understanding takes practice!";
+            }
+
+            message.textContent = achievementMessage;
+            description.textContent = achievementDesc;
+            modal.classList.add('show');
+        }
+
+        document.getElementById('submitBtn').addEventListener('click', submitQuiz);
+
+        // Initialize
+        renderQuestions();
+    </script>
+</body>
+</html>
